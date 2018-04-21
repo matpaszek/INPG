@@ -1,0 +1,43 @@
+#ifndef CATALOGUE_HPP_
+#define CATALOGUE_HPP_
+
+#include <string>
+#include <map>
+#include <vector>
+#include <functional>
+
+class Product {
+public:
+    Product(std::string id, std::string name, double price) :
+        _id(id), _name(name), _price(price) {}
+    std::string getId() const {
+        return _id;
+    }
+    std::string getName() const {
+        return _name;
+    }
+    double getPrice() const {
+        return _price;
+    }
+private:
+    std::string _id;
+    std::string _name;
+    double _price;
+};
+
+std::string to_string(const Product& product);
+
+class Catalogue {
+public:
+    using inventory_t = std::map<std::string, Product>;
+    Catalogue(const inventory_t& inventory = inventory_t{})
+        : _inventory(inventory) {}
+    void addProduct(const Product& product) { _inventory.emplace(product.getId(), product); }
+    bool contains(std::string id) const { return (_inventory.find(id) != _inventory.end()); }
+    std::vector<Product> getProductsWithAppropriatePrice(std::function<bool (double)> predicate) const;
+    std::vector<Product> getProductsByNamePart(std::string chunk, bool ignoreCase = false) const;
+private:
+    inventory_t _inventory;
+};
+
+#endif /* CATALOGUE_HPP_ */
