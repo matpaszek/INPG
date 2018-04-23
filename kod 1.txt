@@ -14,6 +14,7 @@ public:
         return _id;
     }
     std::string getName() const {
+	std::cout<<"funkcja getName"<<std::endl;
         return _name;
     }
     double getPrice() const {
